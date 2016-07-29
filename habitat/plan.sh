@@ -6,12 +6,10 @@ pkg_license=(MIT)
 pkg_source=http://billmeyer.me/${pkg_name}/${pkg_name}-${pkg_version}.tar.gz
 pkg_shasum=74248dee62b870853b3c6be84724e702d33d216512201f99cbc56d9cd491d8ec
 pkg_filename=${pkg_name}-${pkg_version}.tar.gz
-pkg_deps=(core/maven core/which billmeyer/apache-tomcat)
+pkg_deps=(core/maven core/which core/tomcat8)
 pkg_expose=(8080)
 
 do_build() {
-  #export M2_HOME=/foo/bar/baz
-
   # Ant requires JAVA_HOME to be set, and can be set via:
   export JAVA_HOME=$(hab pkg path core/jdk8)
   mvn package
@@ -25,6 +23,6 @@ do_install() {
 
   local source="$HAB_CACHE_SRC_PATH/$pkg_dirname"
   echo "\$source=$source"
-  webapps_dir="$(hab pkg path billmeyer/apache-tomcat)/tc/webapps"
+  webapps_dir="$(hab pkg path core/tomcat8)/tc/webapps"
   cp ${source}/target/session-demo.war ${webapps_dir}/
 }
